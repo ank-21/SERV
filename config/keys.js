@@ -1,6 +1,6 @@
 module.exports = {
     mail:{
-        email: 'your email here',
-        pass: 'Your email password here',
+        email: 'resource.hub2020@gmail.com',
+        pass: 'resource2020hub!!',
     }
 }

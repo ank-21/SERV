@@ -46,9 +46,8 @@ router.post('/employee/msg',(req,res)=>{
     const data = req.body;
     console.log("req body",req.body);
     
-    res.send({data});
     sendMail({data});
-    //res.redirect(`/dashboard?user=employee&emailid=${req.body.emailidemployee}`); 
+    res.redirect(`/dashboard?user=employee&emailid=${req.body.emailidemployee}`); 
 })
 
 
