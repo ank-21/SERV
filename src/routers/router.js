@@ -1,13 +1,17 @@
 const express = require('express');
 const router = express.Router();
 const Visitor = require('../models/Visitor');
+const {sendMail } = require('../account/nodemailer');
+
 
 router.post('/visitor/signup',(req,res) => {
     console.log("req body",req.body);
     const visitor = new Visitor(req.body);
     visitor.save()
         .then((data)=>{
-            res.redirect('/dashboard?user=visitor');
+            res.render('dashboard-visitor',{
+                list:data
+            });
         }).catch((e)=>{
             console.log("err",e);
             res.sendFile(path.join(__dirname, '../public', 'index.html'));
@@ -16,26 +20,35 @@ router.post('/visitor/signup',(req,res) => {
 
 router.post('/employee/login',(req,res)=>{
     const dummypassword = "employee";
+    const email = req.body.emailid
     if(req.body.password === dummypassword){
-        res.redirect('/dashboard?user=employee')        
+        res.redirect(`/dashboard?user=employee&emailid=${email}`);       
     }else{
         res.sendFile(path.join(__dirname, '../public', 'index.html'));
     }
 });
 
-router.get('/dashboard',(req,res)=> {
+router.get('/dashboard', async(req,res)=> {
+    const email = req.query.emailid;
+    
     if(req.query.user == 'employee'){
         console.log("i am from employee");
-        console.log("visitor",Visitor);
-        
-        res.render('dashboard',{
-            Visitor
+        const lists = await Visitor.find();
+        res.render('dashboard-employee',{
+            lists,
+            email
         })
         
-    }else if(req.query.user == 'visitor'){
-        console.log("i am from visitor");
-        res.send("done");
     }
+});
+
+router.post('/employee/msg',(req,res)=>{
+    const data = req.body;
+    console.log("req body",req.body);
+    
+    res.send({data});
+    sendMail({data});
+    //res.redirect(`/dashboard?user=employee&emailid=${req.body.emailidemployee}`); 
 })
 
 

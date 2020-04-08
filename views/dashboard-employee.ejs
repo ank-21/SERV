@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Dashboard</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+</head>
+<body>
+
+<div class="container">
+  <h1 style="text-align: center;margin-bottom: 40px;">Dashboard - SERV</h1>
+  <p style="font-size: 18px;">Your Email id = <span style="color: blue;"><%=email%></span></p>
+  <br>
+  <p style="font-size: 20px;">List of details of vistors</p> 
+             
+  <table class="table table-hover">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Email</th>
+        <th>Contact Number</th>
+        <th>Message</th>
+      </tr>
+    </thead>
+    <tbody>
+      
+        <% lists.forEach((list) => { %>
+            <tr>
+            <td><%=list.name%></td>
+            <td><%=list.emailid %></td>
+            <td><%=list.phone %></td>
+            <td><%=list.msg %></td>
+            </tr>
+       <% }) %>
+    </tbody>
+  </table>
+  <div style="margin-top: 7vh;">
+    <h2 style="text-align: center;margin-bottom: 40px;">Send Mail</h2>
+    <form action = '/employee/msg' method="POST">
+
+        <div class="form-group">
+            <label for="email">Email Id of visitor:</label>
+            <!-- <input type="text" class="form-control" id="email" name="email" placeholder="type email of visitor"> -->
+            
+            <select class="form-control" id="sel1" name="email">
+              <% lists.forEach((list) => { %>
+                <option value= "<%= list.emailid %>"><%= list.emailid %></option>
+              <% }) %>
+            </select>
+        </div>
+        <div class="form-group">
+            <label for="msg">Message:</label>
+            <textarea class="form-control" rows="5" id="msg" name="msg" placeholder="type message - Thanks for reaching us, allow us 48 hours to get back to you."></textarea>
+        </div>
+        <div class="form-group">
+          
+          <input class="" type="email" name="emailidemployee" value="<%=email%>" hidden>
+        </div>
+        <button type="submit" class="btn btn-primary" style="margin-left:45%;margin-top:3%;margin-bottom:10%">Send Message</button>
+        
+      </form>
+  </div>
+  
+</div>
+
+</body>
+</html>
